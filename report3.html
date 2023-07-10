@@ -5,7 +5,7 @@
     <script src="OrbitControls.js"></script>
     <h1>パーティクル</h1>
     <p>
-       new THREE.PointsMaterialを用いてパーティクルを作成した。中央には惑星のイラストを表示させた。
+      new THREE.PointsMaterialを用いてパーティクルを作成した。中央には地球を表示させた。
     </p>
     <script>
       // ページの読み込みを待つ
@@ -37,23 +37,8 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         // controls.autoRotate = true;
 
-        // helper
-        //const gridHelper = new THREE.GridHelper(1000, 20); // size, step
-        //scene.add(gridHelper);
-        //const axisHelper = new THREE.AxisHelper(1000); //軸の長さ　X：赤、Y：緑、z：青
-        //scene.add(axisHelper);
-
-        // texture作成
-        var textureLoader = new THREE.TextureLoader();
-        var suntexture = textureLoader.load("img/wakusei.png");
-
-        // 平面（ポリゴン）を作成
-        var sungeometry = new THREE.PlaneGeometry(200,200);
-        var sunmat = new THREE.MeshBasicMaterial({transparent:true});
-        sunmat.map= suntexture;
-        var sunplane = new THREE.Mesh( sungeometry, sunmat );
-        sunplane.position.set(0, 250, 0);
-        scene.add( sunplane );
+        // テクスチャローダーを作成
+        const textureLoader = new THREE.TextureLoader();
 
         // パーティクルシステムを作成
         const particleSystem = createParticleSystem();
@@ -68,6 +53,31 @@
         directionalLight1.position.set(1000, 1000, 700);
         // シーンに追加
         scene.add(directionalLight1);
+
+        // ビルボードを作成
+        //for (let i = 0; i < 100; i++) {
+          //const sprite = new THREE.Sprite();
+          // ランダムな座標に配置
+          //sprite.position.x = 1000 * (Math.random() - 0.5);
+          //sprite.position.y = 300 * Math.random() - 150;
+          //sprite.position.z = 1000 * (Math.random() - 0.5);
+          // 必要に応じてスケールを調整
+          //sprite.scale.set(50, 50, 50);
+
+          //scene.add(sprite);
+        //}
+
+        const erathtexture = textureLoader.load("img/earth.png");
+
+        const sphereGeometry = new THREE.SphereGeometry(200, 32, 32); // 半径、垂直方向の分割数、水平方向の分割数
+        const sphereMaterial = new THREE.MeshPhongMaterial();
+        sphereMaterial.map = erathtexture;
+        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+        scene.add(sphere);
+
+        // 光源（環境光）
+        const ambientLight2 = new THREE.AmbientLight(0xffffff, 1.0);
+        scene.add(ambientLight2);
 
         tick();
 
